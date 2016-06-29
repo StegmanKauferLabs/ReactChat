@@ -1,7 +1,22 @@
 var firebaseChatRef = new Firebase("https://react-chat-94c73.firebaseio.com/messages");
 
-var temporaryRandomName = Math.random().toString(16).replace(".","").substring(0,6)
-
+if (typeof(Storage) !== "undefined") {
+	if(localStorage.getItem("rc.uid") === null || localStorage.getItem("rc.username") === null){
+		var uid = Math.random().toString(16).replace(".","").substring(0,6);
+		var adjIndex = Math.floor(Math.random()*adjectives.length);
+		var animalIndex = Math.floor(Math.random()*animals.length);
+		var username = adjectives[adjIndex] + " " + animals[animalIndex];
+		localStorage.setItem("rc.id", uid);
+		localStorage.setItem("rc.username", username);
+	}else{
+		uid = localStorage.getItem("rc.uid");
+		username = localStorage.getItem("rc.username");
+	}
+} else {
+    console.log("Cannot load username");
+	username = "error";
+	uid = "error";
+}
 
 var Username = React.createClass({
   render: function(){
@@ -72,7 +87,7 @@ var MessageContent = React.createClass({
     this.setState({message: event.target.value});//so html events actually update the context
   },
   generateUsername: function(event){
-    return temporaryRandomName
+    return username
   },
   sendMessage: function(event){
     event.preventDefault()//so we don't refresh the page or anything
