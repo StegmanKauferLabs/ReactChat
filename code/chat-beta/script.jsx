@@ -1,11 +1,15 @@
 var firebaseChatRef = new Firebase("https://react-chat-94c73.firebaseio.com/messages");
 
+var temporaryRandomName = Math.random().toString(16).replace(".","").substring(0,6)
 
 
-function generateUsername(){
-  //should persist on page refresh
-  //@pierce
-}
+var Username = React.createClass({
+  render: function(){
+    return (
+      <p>Your username: <span id="username"></span></p>
+    )
+  }
+})
 
 var MessageList = React.createClass({
   getInitialState: function() {
@@ -17,6 +21,13 @@ var MessageList = React.createClass({
   },
   addMessage: function(messageObject){//messageobject has values from, with user the message is from, and message, with the message content
     this.setState({recentMessages: this.state.recentMessages.concat([messageObject])})
+  },
+  componentDidMount: function() {
+    var self = this
+
+    firebaseChatRef.on("value", function(snapshot) {
+      self.addMessage(snapshot.val())
+    });
   },
   render: function(){
 
@@ -60,6 +71,9 @@ var MessageContent = React.createClass({
   handleChange: function(event) {
     this.setState({message: event.target.value});//so html events actually update the context
   },
+  generateUsername: function(event){
+    return temporaryRandomName
+  },
   sendMessage: function(event){
     event.preventDefault()//so we don't refresh the page or anything
     
@@ -67,9 +81,10 @@ var MessageContent = React.createClass({
 
     console.log(messageValue)
 
-    firebaseChatRef.set({
-      from: "To Be Implemented By Pierce",
-      message: this.state.message
+    firebaseChatRef.child().set({
+      from: this.generateUsername(),
+      message: this.state.message,
+      time: Date.now()
     })
 
     //submit to firebase
@@ -95,6 +110,7 @@ var MessageContent = React.createClass({
 
 ReactDOM.render(
   <div>
+    <Username />
     <MessageList />
     <MessageContent />
   </div>,

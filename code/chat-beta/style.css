@@ -5,3 +5,7 @@
 .from::after{
 	content: " ";
 }
+
+#username{
+	font-weight: bold;
+}
