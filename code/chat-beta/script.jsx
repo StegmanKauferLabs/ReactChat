@@ -1,13 +1,6 @@
-var ExampleApplication = React.createClass({
-  render: function() {
-    var elapsed = Math.round(this.props.elapsed  / 100);
-    var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
-    var message =
-      'React has been successfully running for ' + seconds + ' seconds.';
+var firebaseChatRef = new Firebase("https://react-chat-94c73.firebaseio.com/messages");
 
-    return <p>{message}</p>;
-  }
-});
+
 
 function generateUsername(){
   //should persist on page refresh
@@ -62,22 +55,26 @@ var Message = React.createClass({
 
 var MessageContent = React.createClass({
   getInitialState: function() {//what the content of the text box will be at the start
-    return {value: ''};
+    return {message: ''};
   },
   handleChange: function(event) {
-    this.setState({value: event.target.value});//so html events actually update the context
+    this.setState({message: event.target.value});//so html events actually update the context
   },
   sendMessage: function(event){
     event.preventDefault()//so we don't refresh the page or anything
     
-    const messageValue = this.state.value
+    const messageValue = this.state.message
 
     console.log(messageValue)
 
+    firebaseChatRef.set({
+      from: "To Be Implemented By Pierce",
+      message: this.state.message
+    })
 
     //submit to firebase
       //after the firebase callback
-      this.setState({value: ""})
+      this.setState({message: ""})
   },
   render: function() {
     return (
@@ -87,7 +84,7 @@ var MessageContent = React.createClass({
         <input
           type="text"
           id="chatInput"
-          value={this.state.value}
+          value={this.state.message}
           onChange={this.handleChange}
           placeholder="Your message..."
         />
