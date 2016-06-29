@@ -9,18 +9,24 @@ var ExampleApplication = React.createClass({
   }
 });
 
+function generateUsername(){
+  //should persist on page refresh
+  //@pierce
+}
+
 var MessageList = React.createClass({
   getInitialState: function() {
       return {
         recentMessages: [
-          //{from: "", message: ""}
-          {from: "matthew", message: "hi"},
-          {from: "bob", message: "hello"}
 
         ]
       };
   },
+  addMessage: function(messageObject){//messageobject has values from, with user the message is from, and message, with the message content
+    this.setState({recentMessages: this.state.recentMessages.concat([messageObject])})
+  },
   render: function(){
+
     var messages = [];
     for(var i=0; i < this.state.recentMessages.length; i++){
       var m = this.state.recentMessages[i]
@@ -35,7 +41,6 @@ var MessageList = React.createClass({
   }
 })
 
-var messageList = []
 
 var Message = React.createClass({
   getInitialState: function() {
