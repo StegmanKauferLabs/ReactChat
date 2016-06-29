@@ -26,7 +26,11 @@ var MessageList = React.createClass({
     var self = this
 
     firebaseChatRef.on("value", function(snapshot) {
-      self.addMessage(snapshot.val())
+      // self.addMessage(snapshot.val())
+      for(var key in snapshot.val()){
+        self.addMessage(snapshot.val()[key])
+      }
+      
     });
   },
   render: function(){
@@ -81,7 +85,7 @@ var MessageContent = React.createClass({
 
     console.log(messageValue)
 
-    firebaseChatRef.child().set({
+    firebaseChatRef.push({
       from: this.generateUsername(),
       message: this.state.message,
       time: Date.now()
