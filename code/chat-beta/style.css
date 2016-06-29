@@ -1,0 +1,7 @@
+.from{
+	font-weight: bold;
+}
+
+.from::after{
+	content: " ";
+}
