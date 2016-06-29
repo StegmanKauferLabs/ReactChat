@@ -3,14 +3,6 @@ var firebaseChatRef = new Firebase("https://react-chat-94c73.firebaseio.com/mess
 var temporaryRandomName = Math.random().toString(16).replace(".","").substring(0,6)
 
 
-var Username = React.createClass({
-  render: function(){
-    return (
-      <p>Your username: <span id="username"></span></p>
-    )
-  }
-})
-
 var MessageList = React.createClass({
   getInitialState: function() {
       return {
@@ -97,24 +89,26 @@ var MessageContent = React.createClass({
   },
   render: function() {
     return (
-      <form
-        className="chatForm"
-        onSubmit={this.sendMessage}>
-        <input
-          type="text"
-          id="chatInput"
-          value={this.state.message}
-          onChange={this.handleChange}
-          placeholder="Your message..."
-        />
-      </form>
+      <div>
+        <form
+          className="chatForm"
+          onSubmit={this.sendMessage}>
+          <input
+            type="text"
+            id="chatInput"
+            value={this.state.message}
+            onChange={this.handleChange}
+            placeholder="Your message..."
+          />
+        </form>
+        <p>(You are <span className="from">{this.generateUsername()}</span>)</p>
+      </div>
     );
   }
 });
 
 ReactDOM.render(
   <div>
-    <Username />
     <MessageList />
     <MessageContent />
   </div>,
